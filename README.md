@@ -6,7 +6,7 @@ A learning-focused web application vulnerability scanner built in Python, mapped
 
 ## Features (in progress)
 - [x] Security header checker
-- [ ] Site crawler
+- [x] Site crawler
 - [ ] Reflected XSS detection
 - [ ] CSRF token detection
 - [ ] Outdated JS library detection
@@ -19,6 +19,19 @@ A learning-focused web application vulnerability scanner built in Python, mapped
 
 **Unit tests passing:**
 ![Unit tests passing](docs/screenshots/phase1-unit-tests-passing.png)
+
+**Phase 2 — Crawler unit tests passing:**
+![Crawler tests](docs/screenshots/phase2-crawler-tests-passing.png)
+
+## Crawler Note
+
+The current crawler uses `requests` + BeautifulSoup (static HTML only).
+Modern SPAs like Juice Shop render content via JavaScript, so the crawler
+finds limited pages/forms there. It is verified working via unit tests with
+mocked server-rendered HTML. DVWA (used from Phase 3) is server-rendered
+PHP so the crawler works fully against it.
+
+See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for full details.
 
 ## Setup
 
