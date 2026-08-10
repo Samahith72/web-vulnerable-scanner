@@ -147,40 +147,43 @@ python3 -m unittest discover tests -v
 ---
 
 ## Project Structure
+
+```
 web-vuln-scanner/
 ├── README.md
 ├── LICENSE
 ├── .gitignore
 ├── requirements.txt
 ├── docs/
-│ ├── ARCHITECTURE.md
-│ ├── OWASP_MAPPING.md
-│ └── screenshots/
-│ ├── phase1-header-check-run.png
-│ ├── phase1-unit-tests-passing.png
-│ ├── phase2-crawler-tests-passing.png
-│ ├── phase3-xss-scan-run.png
-│ ├── phase3-xss-tests-passing.png
-│ ├── phase4-csrf-scan-run.png
-│ ├── phase4-csrf-tests-passing.png
-│ ├── phase5-js-scan-run.png
-│ └── phase5-js-tests-passing.png
+│   ├── ARCHITECTURE.md
+│   ├── OWASP_MAPPING.md
+│   └── screenshots/
+│       ├── phase1-header-check-run.png
+│       ├── phase1-unit-tests-passing.png
+│       ├── phase2-crawler-tests-passing.png
+│       ├── phase3-xss-scan-run.png
+│       ├── phase3-xss-tests-passing.png
+│       ├── phase4-csrf-scan-run.png
+│       ├── phase4-csrf-tests-passing.png
+│       ├── phase5-js-scan-run.png
+│       └── phase5-js-tests-passing.png
 ├── src/
-│ ├── main.py
-│ └── scanner/
-│ ├── init.py
-│ ├── auth.py
-│ ├── header_check.py
-│ ├── crawler.py
-│ ├── xss_check.py
-│ ├── csrf_check.py
-│ └── js_check.py
+│   ├── main.py
+│   └── scanner/
+│       ├── __init__.py
+│       ├── auth.py
+│       ├── header_check.py
+│       ├── crawler.py
+│       ├── xss_check.py
+│       ├── csrf_check.py
+│       └── js_check.py
 └── tests/
-├── test_header_check.py
-├── test_crawler.py
-├── test_xss_check.py
-├── test_csrf_check.py
-└── test_js_check.py
+    ├── test_header_check.py
+    ├── test_crawler.py
+    ├── test_xss_check.py
+    ├── test_csrf_check.py
+    └── test_js_check.py
+```
 
 ---
 
