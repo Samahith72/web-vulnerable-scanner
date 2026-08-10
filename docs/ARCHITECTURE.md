@@ -7,7 +7,8 @@ main.py
 ├── header_check.py → checks HTTP response headers
 ├── auth.py → handles authenticated sessions (e.g. DVWA login)
 ├── crawler.py → discovers pages and forms
-└── xss_check.py → tests forms for reflected XSS
+├── xss_check.py → tests forms for reflected XSS
+└── csrf_check.py → checks POST forms for missing CSRF tokens
 
 Each module returns a list of finding dicts in this standard shape:
 
@@ -20,6 +21,7 @@ Each module returns a list of finding dicts in this standard shape:
 }
 ```
 
+Findings are sorted by severity (High → Medium → Low) before display.
 This makes it easy to pass all findings into a report generator later
 regardless of which module produced them.
 
@@ -53,10 +55,16 @@ JavaScript before parsing, enabling full SPA support.
 
 ### xss_check.py
 Takes the form map from the crawler and submits a harmless but detectable
-payload (`<script>xss_test_payload</script>`) into every text-like input
-field. If the raw payload appears unescaped in the response HTML, the form
-is reflecting unsanitized input and is flagged as a High severity finding.
+payload into every text-like input field. If the raw payload appears
+unescaped in the response HTML, the form is flagged as High severity.
 Maps to **OWASP A03:2021 – Injection**.
+
+### csrf_check.py
+Inspects every POST form discovered by the crawler for the presence of
+a CSRF token field. Checks field names against a list of known CSRF token
+naming patterns used by popular frameworks. GET forms are intentionally
+skipped — only POST forms that change server state need CSRF protection.
+Maps to **OWASP A01:2021 – Broken Access Control**.
 
 ---
 
@@ -64,14 +72,14 @@ Maps to **OWASP A03:2021 – Injection**.
 
 | Target | URL | Notes |
 |---|---|---|
-| OWASP Juice Shop | http://localhost:3000 | Modern SPA — header checks only (crawler limitation) |
-| DVWA | http://localhost:8080 | Server-rendered PHP — full scanning supported |
+| OWASP Juice Shop | http://localhost:3000 | Header checks only (SPA limitation) |
+| DVWA | http://localhost:8080 | Full scanning — all phases |
 
 ---
 
 ## Crawler Limitation Detail
 
-Confirmed when crawling Juice Shop directly: 1 page visited, 0 forms found,
+Confirmed when crawling Juice Shop: 1 page visited, 0 forms found,
 despite the site having many pages and forms once JavaScript renders them.
-DVWA is used from Phase 3 onwards as the primary scan target because it is
-server-rendered and the crawler works fully against it.
+DVWA is the primary scan target from Phase 3 onwards because it is
+server-rendered PHP and the crawler works fully against it.
