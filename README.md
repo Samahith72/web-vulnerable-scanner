@@ -14,7 +14,7 @@ mapped to the OWASP Top 10 (2021).
 - [x] Phase 1 — Security header checker (OWASP A05:2021)
 - [x] Phase 2 — Site crawler with form extraction
 - [x] Phase 3 — Reflected XSS detection (OWASP A03:2021)
-- [ ] Phase 4 — CSRF token detection (OWASP A01:2021)
+- [x] Phase 4 — CSRF token detection (OWASP A01:2021)
 - [ ] Phase 5 — Outdated JS library detection (OWASP A06:2021)
 - [ ] Phase 6 — HTML report generation
 
@@ -33,7 +33,6 @@ docker run -d -p 3000:3000 --name juice-shop bkimminich/juice-shop
 Visit: `http://localhost:3000`
 > Used for Phase 1 (header checks only). Juice Shop is a modern SPA —
 > the crawler finds no links or forms due to JavaScript rendering.
-> See Architecture doc for details.
 
 ### DVWA (used from Phase 3 onwards)
 
@@ -95,13 +94,9 @@ pip install -r requirements.txt
 python3 src/main.py
 ```
 
-**Run header checker only:**
+**Run individual modules:**
 ```bash
 python3 src/scanner/header_check.py
-```
-
-**Run crawler only:**
-```bash
 python3 src/scanner/crawler.py
 ```
 
@@ -138,6 +133,14 @@ python3 -m unittest discover tests -v
 **Unit tests passing:**
 ![XSS tests](docs/screenshots/phase3-xss-tests-passing.png)
 
+### Phase 4 — CSRF Token Checker
+
+**Full scan against DVWA showing CSRF findings:**
+![CSRF scan run](docs/screenshots/phase4-csrf-scan-run.png)
+
+**Unit tests passing:**
+![CSRF tests](docs/screenshots/phase4-csrf-tests-passing.png)
+
 ---
 
 ## Project Structure
@@ -154,7 +157,9 @@ web-vuln-scanner/
 │ ├── phase1-unit-tests-passing.png
 │ ├── phase2-crawler-tests-passing.png
 │ ├── phase3-xss-scan-run.png
-│ └── phase3-xss-tests-passing.png
+│ ├── phase3-xss-tests-passing.png
+│ ├── phase4-csrf-scan-run.png
+│ └── phase4-csrf-tests-passing.png
 ├── src/
 │ ├── main.py
 │ └── scanner/
@@ -162,11 +167,14 @@ web-vuln-scanner/
 │ ├── auth.py
 │ ├── header_check.py
 │ ├── crawler.py
-│ └── xss_check.py
+│ ├── xss_check.py
+│ └── csrf_check.py
 └── tests/
 ├── test_header_check.py
 ├── test_crawler.py
-└── test_xss_check.py
+├── test_xss_check.py
+└── test_csrf_check.py
+
 
 ---
 

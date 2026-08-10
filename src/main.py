@@ -9,6 +9,7 @@ from scanner.header_check import check_headers
 from scanner.crawler import crawl
 from scanner.auth import dvwa_login
 from scanner.xss_check import check_xss
+from scanner.csrf_check import check_csrf
 
 
 def run_scan(base_url: str, use_auth: bool = False):
@@ -41,12 +42,21 @@ def run_scan(base_url: str, use_auth: bool = False):
     all_findings.extend(xss_findings)
     print(f"    Found {len(xss_findings)} XSS vulnerability(s)\n")
 
+    # Phase 4: CSRF check
+    print("[*] Checking forms for missing CSRF tokens...")
+    csrf_findings = check_csrf(result["forms"])
+    all_findings.extend(csrf_findings)
+    print(f"    Found {len(csrf_findings)} CSRF issue(s)\n")
+
     # Print all findings
     print(f"{'='*55}")
     print(f"  Scan Complete — {len(all_findings)} total finding(s)")
     print(f"{'='*55}\n")
 
-    for f in all_findings:
+    severity_order = {"High": 0, "Medium": 1, "Low": 2, "Error": 3}
+    sorted_findings = sorted(all_findings, key=lambda f: severity_order.get(f.get("severity", "Low"), 99))
+
+    for f in sorted_findings:
         severity = f.get("severity", "Info")
         print(f"[{severity}] {f['check']}")
         print(f"  {f['description']}")
@@ -54,5 +64,4 @@ def run_scan(base_url: str, use_auth: bool = False):
 
 
 if __name__ == "__main__":
-    # Run against DVWA with auth
     run_scan("http://localhost:8080", use_auth=True)
