@@ -10,6 +10,7 @@ from scanner.crawler import crawl
 from scanner.auth import dvwa_login
 from scanner.xss_check import check_xss
 from scanner.csrf_check import check_csrf
+from scanner.js_check import check_js_libraries
 
 
 def run_scan(base_url: str, use_auth: bool = False):
@@ -48,13 +49,22 @@ def run_scan(base_url: str, use_auth: bool = False):
     all_findings.extend(csrf_findings)
     print(f"    Found {len(csrf_findings)} CSRF issue(s)\n")
 
-    # Print all findings
+    # Phase 5: JS library check
+    print("[*] Checking for outdated JS libraries...")
+    js_findings = check_js_libraries(result["visited_pages"], base_url, session=session)
+    all_findings.extend(js_findings)
+    print(f"    Found {len(js_findings)} outdated library(s)\n")
+
+    # Print all findings sorted by severity
     print(f"{'='*55}")
     print(f"  Scan Complete — {len(all_findings)} total finding(s)")
     print(f"{'='*55}\n")
 
     severity_order = {"High": 0, "Medium": 1, "Low": 2, "Error": 3}
-    sorted_findings = sorted(all_findings, key=lambda f: severity_order.get(f.get("severity", "Low"), 99))
+    sorted_findings = sorted(
+        all_findings,
+        key=lambda f: severity_order.get(f.get("severity", "Low"), 99)
+    )
 
     for f in sorted_findings:
         severity = f.get("severity", "Info")

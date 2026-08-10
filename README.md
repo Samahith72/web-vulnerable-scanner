@@ -15,7 +15,7 @@ mapped to the OWASP Top 10 (2021).
 - [x] Phase 2 — Site crawler with form extraction
 - [x] Phase 3 — Reflected XSS detection (OWASP A03:2021)
 - [x] Phase 4 — CSRF token detection (OWASP A01:2021)
-- [ ] Phase 5 — Outdated JS library detection (OWASP A06:2021)
+- [x] Phase 5 — Outdated JS library detection (OWASP A06:2021)
 - [ ] Phase 6 — HTML report generation
 
 ---
@@ -113,7 +113,6 @@ python3 -m unittest discover tests -v
 ## Screenshots
 
 ### Phase 1 — Security Header Checker
-
 **Running against OWASP Juice Shop:**
 ![Header check run](docs/screenshots/phase1-header-check-run.png)
 
@@ -121,12 +120,10 @@ python3 -m unittest discover tests -v
 ![Header check tests](docs/screenshots/phase1-unit-tests-passing.png)
 
 ### Phase 2 — Crawler
-
 **Unit tests passing:**
 ![Crawler tests](docs/screenshots/phase2-crawler-tests-passing.png)
 
 ### Phase 3 — Reflected XSS Checker
-
 **Full scan against DVWA showing XSS findings:**
 ![XSS scan run](docs/screenshots/phase3-xss-scan-run.png)
 
@@ -134,12 +131,18 @@ python3 -m unittest discover tests -v
 ![XSS tests](docs/screenshots/phase3-xss-tests-passing.png)
 
 ### Phase 4 — CSRF Token Checker
-
 **Full scan against DVWA showing CSRF findings:**
 ![CSRF scan run](docs/screenshots/phase4-csrf-scan-run.png)
 
 **Unit tests passing:**
 ![CSRF tests](docs/screenshots/phase4-csrf-tests-passing.png)
+
+### Phase 5 — Outdated JS Library Checker
+**Full scan against DVWA showing JS library findings:**
+![JS scan run](docs/screenshots/phase5-js-scan-run.png)
+
+**Unit tests passing:**
+![JS tests](docs/screenshots/phase5-js-tests-passing.png)
 
 ---
 
@@ -159,7 +162,9 @@ web-vuln-scanner/
 │ ├── phase3-xss-scan-run.png
 │ ├── phase3-xss-tests-passing.png
 │ ├── phase4-csrf-scan-run.png
-│ └── phase4-csrf-tests-passing.png
+│ ├── phase4-csrf-tests-passing.png
+│ ├── phase5-js-scan-run.png
+│ └── phase5-js-tests-passing.png
 ├── src/
 │ ├── main.py
 │ └── scanner/
@@ -168,13 +173,14 @@ web-vuln-scanner/
 │ ├── header_check.py
 │ ├── crawler.py
 │ ├── xss_check.py
-│ └── csrf_check.py
+│ ├── csrf_check.py
+│ └── js_check.py
 └── tests/
 ├── test_header_check.py
 ├── test_crawler.py
 ├── test_xss_check.py
-└── test_csrf_check.py
-
+├── test_csrf_check.py
+└── test_js_check.py
 
 ---
 
