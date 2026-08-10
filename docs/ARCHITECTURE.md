@@ -8,7 +8,8 @@ main.py
 ├── auth.py → handles authenticated sessions (e.g. DVWA login)
 ├── crawler.py → discovers pages and forms
 ├── xss_check.py → tests forms for reflected XSS
-└── csrf_check.py → checks POST forms for missing CSRF tokens
+├── csrf_check.py → checks POST forms for missing CSRF tokens
+└── js_check.py → detects outdated/vulnerable JS libraries
 
 Each module returns a list of finding dicts in this standard shape:
 
@@ -22,8 +23,6 @@ Each module returns a list of finding dicts in this standard shape:
 ```
 
 Findings are sorted by severity (High → Medium → Low) before display.
-This makes it easy to pass all findings into a report generator later
-regardless of which module produced them.
 
 ---
 
@@ -63,8 +62,16 @@ Maps to **OWASP A03:2021 – Injection**.
 Inspects every POST form discovered by the crawler for the presence of
 a CSRF token field. Checks field names against a list of known CSRF token
 naming patterns used by popular frameworks. GET forms are intentionally
-skipped — only POST forms that change server state need CSRF protection.
+skipped.
 Maps to **OWASP A01:2021 – Broken Access Control**.
+
+### js_check.py
+Fetches each crawled page and inspects `<script src="...">` tags for
+library name and version number in the filename. Matches against a local
+vulnerability database of known-vulnerable versions with CVE references.
+Deduplicates findings so the same library is only reported once even if
+found across multiple pages.
+Maps to **OWASP A06:2021 – Vulnerable and Outdated Components**.
 
 ---
 
