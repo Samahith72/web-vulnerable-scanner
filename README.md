@@ -3,7 +3,7 @@
 A learning-focused web application vulnerability scanner built in Python,
 mapped to the OWASP Top 10 (2021).
 
-> ⚠️ **For educational use only.** Only scan applications you own or
+> **For educational use only.** Only scan applications you own or
 > intentionally vulnerable targets like DVWA or OWASP Juice Shop.
 > Never scan third-party sites without explicit written permission.
 
@@ -16,7 +16,7 @@ mapped to the OWASP Top 10 (2021).
 - [x] Phase 3 — Reflected XSS detection (OWASP A03:2021)
 - [x] Phase 4 — CSRF token detection (OWASP A01:2021)
 - [x] Phase 5 — Outdated JS library detection (OWASP A06:2021)
-- [ ] Phase 6 — HTML report generation
+- [x] Phase 6 — HTML report generation 
 
 ---
 
@@ -89,9 +89,14 @@ pip install -r requirements.txt
 
 ## Usage
 
-**Run full scan against DVWA:**
+**Run full scan against DVWA (generates HTML report):**
 ```bash
 python3 src/main.py
+```
+
+The report is saved to `reports/scan_report.html`. Open it in your browser:
+```bash
+xdg-open reports/scan_report.html
 ```
 
 **Run individual modules:**
@@ -138,11 +143,18 @@ python3 -m unittest discover tests -v
 ![CSRF tests](docs/screenshots/phase4-csrf-tests-passing.png)
 
 ### Phase 5 — Outdated JS Library Checker
-**Full scan against DVWA showing JS library findings:**
+**Full scan against DVWA:**
 ![JS scan run](docs/screenshots/phase5-js-scan-run.png)
 
 **Unit tests passing:**
 ![JS tests](docs/screenshots/phase5-js-tests-passing.png)
+
+### Phase 6 — HTML Report
+**Generated report in browser:**
+![HTML report](docs/screenshots/phase6-html-report.png)
+
+**Unit tests passing:**
+![Report tests](docs/screenshots/phase6-report-tests-passing.png)
 
 ---
 
@@ -166,7 +178,11 @@ web-vuln-scanner/
 │       ├── phase4-csrf-scan-run.png
 │       ├── phase4-csrf-tests-passing.png
 │       ├── phase5-js-scan-run.png
-│       └── phase5-js-tests-passing.png
+│       ├── phase5-js-tests-passing.png
+│       ├── phase6-html-report.png
+│       └── phase6-report-tests-passing.png
+├── reports/
+│   └── .gitkeep
 ├── src/
 │   ├── main.py
 │   └── scanner/
@@ -176,16 +192,16 @@ web-vuln-scanner/
 │       ├── crawler.py
 │       ├── xss_check.py
 │       ├── csrf_check.py
-│       └── js_check.py
+│       ├── js_check.py
+│       └── report.py
 └── tests/
     ├── test_header_check.py
     ├── test_crawler.py
     ├── test_xss_check.py
     ├── test_csrf_check.py
-    └── test_js_check.py
+    ├── test_js_check.py
+    └── test_report.py
 ```
-
----
 
 ## OWASP Mapping
 
