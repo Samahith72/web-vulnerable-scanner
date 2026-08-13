@@ -1,17 +1,19 @@
-# Architecture
-
 ## Overview
 
 The scanner is structured as a pipeline:
-main.py
-├── header_check.py → checks HTTP response headers
-├── auth.py → handles authenticated sessions (e.g. DVWA login)
-├── crawler.py → discovers pages and forms
-├── xss_check.py → tests forms for reflected XSS
-├── csrf_check.py → checks POST forms for missing CSRF tokens
-└── js_check.py → detects outdated/vulnerable JS libraries
 
-Each module returns a list of finding dicts in this standard shape:
+```
+main.py
+  ├── header_check.py  → checks HTTP response headers
+  ├── auth.py          → handles authenticated sessions (e.g. DVWA login)
+  ├── crawler.py       → discovers pages and forms
+  ├── xss_check.py     → tests forms for reflected XSS
+  ├── csrf_check.py    → checks POST forms for missing CSRF tokens
+  ├── js_check.py      → detects outdated/vulnerable JS libraries
+  └── report.py        → generates HTML report from all findings
+```
+
+Each scanner module returns a list of finding dicts in this standard shape:
 
 ```python
 {
@@ -22,7 +24,8 @@ Each module returns a list of finding dicts in this standard shape:
 }
 ```
 
-Findings are sorted by severity (High → Medium → Low) before display.
+Findings are sorted by severity (High → Medium → Low) before display
+and before being passed into the report generator.
 
 ---
 
@@ -49,8 +52,8 @@ Modern SPAs like OWASP Juice Shop render content via JavaScript after
 page load, so the crawler sees an empty shell and finds no links or forms.
 Verified working against server-rendered apps like DVWA.
 
-**Planned fix / stretch goal:** Integrate Selenium or Playwright to render
-JavaScript before parsing, enabling full SPA support.
+**Planned stretch goal:** Integrate Selenium or Playwright for full
+SPA support.
 
 ### xss_check.py
 Takes the form map from the crawler and submits a harmless but detectable
@@ -61,17 +64,21 @@ Maps to **OWASP A03:2021 – Injection**.
 ### csrf_check.py
 Inspects every POST form discovered by the crawler for the presence of
 a CSRF token field. Checks field names against a list of known CSRF token
-naming patterns used by popular frameworks. GET forms are intentionally
-skipped.
+naming patterns used by popular frameworks. GET forms are skipped.
 Maps to **OWASP A01:2021 – Broken Access Control**.
 
 ### js_check.py
 Fetches each crawled page and inspects `<script src="...">` tags for
 library name and version number in the filename. Matches against a local
 vulnerability database of known-vulnerable versions with CVE references.
-Deduplicates findings so the same library is only reported once even if
-found across multiple pages.
+Deduplicates findings so the same library is only reported once.
 Maps to **OWASP A06:2021 – Vulnerable and Outdated Components**.
+
+### report.py
+Collects all findings from every module and renders them into a
+self-contained HTML file — no external dependencies needed to open it.
+Includes a severity summary dashboard, color-coded finding cards, and
+scan metadata (target, time, version). Report is sorted High → Low.
 
 ---
 

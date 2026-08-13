@@ -9,4 +9,4 @@ This document tracks which scanner features map to which OWASP Top 10 (2021) cat
 | Reflected XSS Check | A03:2021 – Injection | ✅ Complete |
 | CSRF Token Check | A01:2021 – Broken Access Control | ✅ Complete |
 | Outdated JS Library Check | A06:2021 – Vulnerable and Outdated Components | ✅ Complete |
-| HTML Report Generation | N/A (output component) | 🔜 Planned |
+| HTML Report Generation | N/A (output component) | ✅ Complete |
